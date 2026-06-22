@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Settings — Monitoring Alarm IoT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../css/style.css" rel="stylesheet">
+</head>
+<body id="page-top">
+<div id="wrapper">
+
+  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <a class="sidebar-brand" href="/"><div class="sidebar-brand-icon"><i class="fas fa-broadcast-tower"></i></div><div class="sidebar-brand-text">Monitoring <sup>IoT</sup></div></a>
+    <hr class="sidebar-divider my-0">
+    <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">Sistem</div>
+    <li class="nav-item"><a class="nav-link" href="/reports"><i class="fas fa-fw fa-file-export"></i> <span>Reports</span></a></li>
+    <li class="nav-item active"><a class="nav-link" href="/settings"><i class="fas fa-fw fa-cogs"></i> <span>Settings</span></a></li>
+    <hr class="sidebar-divider d-none d-md-block">
+  </ul>
+
+  <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+
+      <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+              <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="topbarUsername">User</span>
+              <div class="img-profile rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width:32px;height:32px;color:#fff;font-weight:700;font-size:13px;" id="userAvatar">A</div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
+              <a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout</a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="container-fluid">
+        <h1 class="h4 mb-4 text-gray-800 font-weight-bold"><i class="fas fa-cogs mr-2"></i> Settings</h1>
+
+        <div id="saveAlert" class="alert d-none" role="alert"></div>
+
+        <form id="settingsForm">
+          <div class="row">
+
+            <div class="col-lg-6 mb-4">
+              <div class="card shadow">
+                <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-network-wired mr-2"></i> Konfigurasi MQTT</h6></div>
+                <div class="card-body">
+                  <div class="form-group"><label class="small font-weight-bold">MQTT Host</label><input type="text" class="form-control" name="mqtt_host" placeholder="localhost"></div>
+                  <div class="form-group"><label class="small font-weight-bold">MQTT Port</label><input type="number" class="form-control" name="mqtt_port" placeholder="1883"></div>
+                  <div class="form-group"><label class="small font-weight-bold">MQTT WebSocket Port</label><input type="number" class="form-control" name="mqtt_ws_port" placeholder="8083"></div>
+                  <div class="form-group"><label class="small font-weight-bold">Dashboard Refresh Rate (ms)</label><input type="number" class="form-control" name="refresh_rate" placeholder="5000"><small class="form-text text-muted">Minimum 1000ms</small></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+              <div class="card shadow">
+                <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-exclamation-triangle mr-2"></i> Alert Thresholds</h6></div>
+                <div class="card-body">
+                  <div class="form-group"><label class="small font-weight-bold">Suhu Maksimum (°C)</label><input type="number" class="form-control" name="alert_temp_max" placeholder="40"><small class="form-text text-muted">Alert jika suhu melebihi nilai ini</small></div>
+                  <div class="form-group"><label class="small font-weight-bold">Jarak Ultrasonik Minimum (cm)</label><input type="number" class="form-control" name="alert_dist_min" placeholder="20"><small class="form-text text-muted">Alert jika jarak di bawah nilai ini</small></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+              <div class="card shadow">
+                <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-tags mr-2"></i> MQTT Topics</h6></div>
+                <div class="card-body">
+                  <div class="form-group"><label class="small font-weight-bold">Topic Beam Sensor</label><input type="text" class="form-control" name="topic_beam" placeholder="iot/beam"></div>
+                  <div class="form-group"><label class="small font-weight-bold">Topic PIR Sensor</label><input type="text" class="form-control" name="topic_pir" placeholder="iot/pir"></div>
+                  <div class="form-group"><label class="small font-weight-bold">Topic Ultrasonik</label><input type="text" class="form-control" name="topic_ultrasonic" placeholder="iot/ultrasonic"></div>
+                  <div class="form-group"><label class="small font-weight-bold">Topic DHT11</label><input type="text" class="form-control" name="topic_dht11" placeholder="iot/dht11"></div>
+                  <div class="form-group"><label class="small font-weight-bold">Topic Buzzer</label><input type="text" class="form-control" name="topic_buzzer" placeholder="iot/buzzer"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+              <div class="card shadow">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                  <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-users mr-2"></i> Manajemen User</h6>
+                  <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addUserModal"><i class="fas fa-plus mr-1"></i> Tambah User</button>
+                </div>
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                      <thead class="thead-light"><tr><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th>Aksi</th></tr></thead>
+                      <tbody id="usersBody"><tr><td colspan="5" class="text-center text-muted">Memuat...</td></tr></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="text-right mb-4">
+            <button type="submit" class="btn btn-primary px-4" id="saveBtn"><i class="fas fa-save mr-1"></i> Simpan Settings</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer class="sticky-footer bg-white">
+      <div class="container my-auto"><div class="copyright text-center my-auto"><span>Copyright &copy; Monitoring Alarm IoT 2026</span></div></div>
+    </footer>
+  </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-user-plus mr-2"></i> Tambah User Baru</h5>
+        <button class="close" type="button" data-dismiss="modal"><span>&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div id="addUserError" class="alert alert-danger d-none small"></div>
+        <div class="form-group"><label class="small font-weight-bold">Username</label><input type="text" class="form-control" id="newUsername" placeholder="Minimal 3 karakter"></div>
+        <div class="form-group"><label class="small font-weight-bold">Email</label><input type="email" class="form-control" id="newEmail" placeholder="user@example.com"></div>
+        <div class="form-group"><label class="small font-weight-bold">Password</label><input type="password" class="form-control" id="newPassword" placeholder="Minimal 6 karakter"></div>
+        <div class="form-group"><label class="small font-weight-bold">Role</label>
+          <select class="form-control" id="newRole">
+            <option value="viewer">Viewer (Hanya lihat)</option>
+            <option value="operator">Operator (Monitor + kontrol buzzer)</option>
+            <option value="admin">Admin (Full access)</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+        <button class="btn btn-primary" type="button" id="addUserBtn"><i class="fas fa-save mr-1"></i> Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/settings.js"></script>
+</body>
+</html>

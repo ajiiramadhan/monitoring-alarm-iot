@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Monitoring Alarm IoT — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+</head>
+<body id="page-top">
+<div id="wrapper">
+
+  <!-- Sidebar -->
+  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <a class="sidebar-brand" href="/"><div class="sidebar-brand-icon"><i class="fas fa-broadcast-tower"></i></div><div class="sidebar-brand-text">Monitoring <sup>IoT</sup></div></a>
+    <hr class="sidebar-divider my-0">
+    <li class="nav-item active"><a class="nav-link" href="/"><i class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">Monitoring</div>
+    <li class="nav-item"><a class="nav-link" href="#kpiRow"><i class="fas fa-fw fa-chart-pie"></i> <span>KPI &amp; Status</span></a></li>
+    <li class="nav-item"><a class="nav-link" href="#sensorRow"><i class="fas fa-fw fa-microchip"></i> <span>Sensor</span></a></li>
+    <li class="nav-item"><a class="nav-link" href="#dhtRow"><i class="fas fa-fw fa-thermometer-half"></i> <span>DHT11</span></a></li>
+    <li class="nav-item"><a class="nav-link" href="#buzzerRow"><i class="fas fa-fw fa-bell"></i> <span>Buzzer Log</span></a></li>
+    <li class="nav-item"><a class="nav-link" href="#alertRow"><i class="fas fa-fw fa-exclamation-triangle"></i> <span>Alerts</span></a></li>
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">Sistem</div>
+    <li class="nav-item"><a class="nav-link" href="/reports"><i class="fas fa-fw fa-file-export"></i> <span>Reports</span></a></li>
+    <li class="nav-item admin-only" style="display:none;"><a class="nav-link" href="/settings"><i class="fas fa-fw fa-cogs"></i> <span>Settings</span></a></li>
+    <hr class="sidebar-divider d-none d-md-block">
+  </ul>
+
+  <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+
+      <!-- Topbar -->
+      <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <div class="d-none d-sm-flex align-items-center small text-gray-600 ml-3">
+          <span class="status-dot offline" id="devDot"></span>
+          <span id="devText">Memuat status...</span>
+        </div>
+        <ul class="navbar-nav ml-auto">
+          <!-- Alerts dropdown -->
+          <li class="nav-item dropdown no-arrow mx-1">
+            <a class="nav-link dropdown-toggle position-relative" href="#" data-toggle="dropdown">
+              <i class="fas fa-bell fa-fw"></i>
+              <span class="badge badge-danger badge-counter" id="alertBadge">0</span>
+            </a>
+            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" style="width:320px;">
+              <h6 class="dropdown-header">Alert Center</h6>
+              <div id="alertDropdownList"><div class="text-center text-muted small p-3">Tidak ada alert</div></div>
+              <a class="dropdown-item text-center small text-gray-500" href="#alertRow">Lihat Semua</a>
+            </div>
+          </li>
+          <div class="topbar-divider d-none d-sm-block"></div>
+          <!-- User dropdown -->
+          <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+              <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="topbarUsername">User</span>
+              <div class="img-profile rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width:32px;height:32px;color:#fff;font-weight:700;font-size:13px;" id="userAvatar">A</div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
+              <span class="dropdown-item-text small text-gray-500">Role: <span id="topbarRole">-</span></span>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout</a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="container-fluid">
+        <h1 class="h4 mb-3 text-gray-800 font-weight-bold">Sensor Monitoring Dashboard</h1>
+
+        <!-- KPI Cards -->
+        <div class="row" id="kpiRow">
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+              <div class="card-body"><div class="row no-gutters align-items-center">
+                <div class="col mr-2"><div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Active Alerts</div><div class="h5 mb-0 font-weight-bold text-gray-800" id="kpiAlerts">0</div></div>
+                <div class="col-auto"><i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i></div>
+              </div></div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+              <div class="card-body"><div class="row no-gutters align-items-center">
+                <div class="col mr-2"><div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Suhu Saat Ini</div><div class="h5 mb-0 font-weight-bold text-gray-800" id="kpiTemp">-- °C</div></div>
+                <div class="col-auto"><i class="fas fa-thermometer-half fa-2x text-gray-300"></i></div>
+              </div></div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+              <div class="card-body"><div class="row no-gutters align-items-center">
+                <div class="col mr-2"><div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Kelembapan</div><div class="h5 mb-0 font-weight-bold text-gray-800" id="kpiHumidity">-- %</div></div>
+                <div class="col-auto"><i class="fas fa-tint fa-2x text-gray-300"></i></div>
+              </div></div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+              <div class="card-body"><div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Status Perangkat</div>
+                  <div class="h5 mb-0 font-weight-bold" id="kpiDevice">--</div>
+                  <div class="text-xs text-gray-500 mt-1" id="kpiDeviceSeen"></div>
+                </div>
+                <div class="col-auto"><i class="fas fa-wifi fa-2x text-gray-300"></i></div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sensor Cards -->
+        <div class="row" id="sensorRow">
+          <!-- Beam -->
+          <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card shadow h-100">
+              <div class="card-header py-2 bg-primary text-white d-flex justify-content-between align-items-center">
+                <span class="small font-weight-bold"><i class="fas fa-broadcast-tower mr-1"></i> BEAM SENSOR</span>
+              </div>
+              <div class="card-body">
+                <p class="small text-muted mb-1">Beam Sensor (Active IR)</p>
+                <h4 class="font-weight-bold" id="beamStatus">--</h4>
+                <span id="beamBadge" class="badge-pill-soft badge-info">Menunggu data...</span>
+                <p class="small text-muted mt-3 mb-1">Sinyal 12 data terakhir</p>
+                <div class="mini-chart" id="beamChart"></div>
+              </div>
+            </div>
+          </div>
+          <!-- PIR -->
+          <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card shadow h-100">
+              <div class="card-header py-2 text-white d-flex justify-content-between align-items-center" style="background:#f6c23e;">
+                <span class="small font-weight-bold"><i class="fas fa-eye mr-1"></i> PIR SENSOR</span>
+              </div>
+              <div class="card-body">
+                <p class="small text-muted mb-1">PIR (Passive Infrared)</p>
+                <h4 class="font-weight-bold" id="pirStatus">--</h4>
+                <span id="pirBadge" class="badge-pill-soft badge-info">Menunggu data...</span>
+                <p class="small text-muted mt-3 mb-1">Sinyal 12 data terakhir</p>
+                <div class="mini-chart" id="pirChart"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Ultrasonik -->
+          <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card shadow h-100">
+              <div class="card-header py-2 bg-info text-white d-flex justify-content-between align-items-center">
+                <span class="small font-weight-bold"><i class="fas fa-satellite-dish mr-1"></i> ULTRASONIK HC-SR04</span>
+              </div>
+              <div class="card-body">
+                <p class="small text-muted mb-1">Jarak Objek</p>
+                <h4 class="font-weight-bold" id="ultraStatus">--</h4>
+                <span id="ultraBadge" class="badge-pill-soft badge-info">Menunggu data...</span>
+                <p class="small text-muted mt-3 mb-1">Jarak 12 data terakhir (cm)</p>
+                <div class="mini-chart" id="ultraChart"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DHT11 -->
+        <div class="row" id="dhtRow">
+          <div class="col-12 mb-4">
+            <div class="card shadow">
+              <div class="card-header py-3 d-flex align-items-center justify-content-between flex-wrap">
+                <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-thermometer-half mr-2"></i> Sensor DHT11</h6>
+                <div class="btn-group btn-group-sm" id="dhtRangeGroup">
+                  <button class="btn btn-outline-primary active" data-range="1h">1 Jam</button>
+                  <button class="btn btn-outline-primary" data-range="24h">24 Jam</button>
+                  <button class="btn btn-outline-primary" data-range="7d">7 Hari</button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="row mb-3">
+                  <div class="col-md-3 col-6 mb-3"><div class="dht-stat-box">
+                    <div class="dht-stat-label"><i class="fas fa-thermometer-half mr-1 text-danger"></i> SUHU</div>
+                    <div class="dht-stat-value text-danger" id="dhtSuhu">--°C</div>
+                    <div class="dht-stat-sub">Realtime via MQTT</div>
+                  </div></div>
+                  <div class="col-md-3 col-6 mb-3"><div class="dht-stat-box">
+                    <div class="dht-stat-label"><i class="fas fa-tint mr-1 text-primary"></i> KELEMBAPAN</div>
+                    <div class="dht-stat-value text-primary" id="dhtKelembapan">--%</div>
+                    <div class="dht-stat-sub">Update: <span id="dhtLastUpdate">-</span></div>
+                  </div></div>
+                  <div class="col-md-3 col-6 mb-3"><div class="dht-stat-box">
+                    <div class="dht-stat-label"><i class="fas fa-fire mr-1 text-warning"></i> HEAT INDEX</div>
+                    <div class="dht-stat-value text-warning" id="dhtHeatIndex">--°C</div>
+                    <div class="dht-stat-sub">Feels-like temperature</div>
+                  </div></div>
+                  <div class="col-md-3 col-6 mb-3"><div class="dht-stat-box">
+                    <div class="dht-stat-label"><i class="fas fa-circle mr-1 text-success"></i> STATUS</div>
+                    <div class="dht-stat-value text-success" id="dhtSensorStatus">--</div>
+                    <div class="dht-stat-sub">Berdasarkan koneksi MQTT</div>
+                  </div></div>
+                </div>
+                <div class="chart-container mb-3"><canvas id="dhtChart"></canvas></div>
+                <div class="table-responsive">
+                  <table class="table table-hover table-sm mb-0">
+                    <thead class="thead-light"><tr><th>Timestamp</th><th>Suhu (°C)</th><th>Kelembapan (%)</th><th>Heat Index</th><th>Kondisi</th></tr></thead>
+                    <tbody id="dhtBody"><tr><td colspan="5" class="text-center text-muted">Memuat...</td></tr></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buzzer Log -->
+        <div class="row" id="buzzerRow">
+          <div class="col-12">
+            <div class="card shadow mb-4">
+              <div class="card-header py-3 d-flex align-items-center justify-content-between flex-wrap">
+                <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-volume-up mr-2"></i> Log Aktivitas Buzzer</h6>
+                <div class="control-area">
+                  <button class="btn-action" id="buzzerOnBtn"><i class="fas fa-volume-up mr-1"></i> Aktifkan</button>
+                  <button class="btn-action danger ml-1" id="buzzerOffBtn"><i class="fas fa-volume-mute mr-1"></i> Matikan</button>
+                </div>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover mb-0">
+                    <thead class="thead-light"><tr><th>Timestamp</th><th>Pemicu</th><th>Event</th><th>Durasi</th><th>Pesan</th></tr></thead>
+                    <tbody id="logBody"><tr><td colspan="5" class="text-center text-muted">Memuat...</td></tr></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alerts Table -->
+        <div class="row" id="alertRow">
+          <div class="col-12">
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-exclamation-triangle mr-2"></i> Riwayat Alert</h6>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover mb-0">
+                    <thead class="thead-light"><tr><th>Timestamp</th><th>Sensor</th><th>Pesan</th><th>Severity</th><th>Status</th></tr></thead>
+                    <tbody id="alertBody"><tr><td colspan="5" class="text-center text-muted">Memuat...</td></tr></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /container-fluid -->
+    </div><!-- /content -->
+
+    <footer class="sticky-footer bg-white">
+      <div class="container my-auto"><div class="copyright text-center my-auto">
+        <span>Copyright &copy; Monitoring Alarm IoT 2026</span>
+      </div></div>
+    </footer>
+  </div>
+</div>
+
+<div id="toastContainer"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

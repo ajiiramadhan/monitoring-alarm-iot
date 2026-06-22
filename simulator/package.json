@@ -1,0 +1,12 @@
+{
+  "name": "iot-monitoring-simulator",
+  "version": "1.0.0",
+  "description": "Dummy ESP32 MQTT publisher untuk testing dashboard tanpa hardware fisik",
+  "main": "simulate.js",
+  "scripts": {
+    "start": "node simulate.js"
+  },
+  "dependencies": {
+    "mqtt": "^5.3.4"
+  }
+}

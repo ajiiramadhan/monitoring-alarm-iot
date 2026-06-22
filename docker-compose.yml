@@ -1,0 +1,74 @@
+version: "3.8"
+
+services:
+
+  # ─── PostgreSQL Database ─────────────────────────────────────────────
+  postgres:
+    image: postgres:15-alpine
+    container_name: iot_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-iot_monitoring}
+      POSTGRES_USER: ${DB_USER:-iot_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-iot_secret_password}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-iot_user} -d ${DB_NAME:-iot_monitoring}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - iot_network
+
+  # ─── EMQX MQTT Broker (with WebSocket support) ───────────────────────
+  emqx:
+    image: emqx/emqx:5.4.1
+    container_name: iot_emqx
+    restart: unless-stopped
+    environment:
+      EMQX_NAME: iot_emqx
+      EMQX_HOST: 127.0.0.1
+    ports:
+      - "1883:1883"     # MQTT
+      - "8083:8083"     # MQTT over WebSocket
+      - "8084:8084"     # MQTT over WSS
+      - "18083:18083"   # EMQX Dashboard (login: admin / public)
+    volumes:
+      - emqx_data:/opt/emqx/data
+      - emqx_log:/opt/emqx/log
+    networks:
+      - iot_network
+
+  # ─── Node.js Backend (Express + MQTT + Socket.IO) ────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: iot_backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DB_HOST: postgres
+      MQTT_HOST: emqx
+    ports:
+      - "${PORT:-3000}:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      emqx:
+        condition: service_started
+    networks:
+      - iot_network
+
+networks:
+  iot_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  emqx_data:
+  emqx_log:
