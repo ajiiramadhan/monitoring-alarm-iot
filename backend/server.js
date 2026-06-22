@@ -40,11 +40,10 @@ app.use('/api/buzzer',   require('./routes/buzzer.routes'));
 app.get('/api/health',   (req, res) => res.json({ success: true, status: 'ok', time: new Date().toISOString() }));
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(frontendDir));
-app.get('/login',    (req, res) => res.sendFile(path.join(frontendDir, 'pages/login.html')));
-app.get('/settings', (req, res) => res.sendFile(path.join(frontendDir, 'pages/settings.html')));
-app.get('/reports',  (req, res) => res.sendFile(path.join(frontendDir, 'pages/reports.html')));
-app.get('/',         (req, res) => res.sendFile(path.join(frontendDir, 'index.html')));
+app.get('/login',    (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/login.html')));
+app.get('/settings', (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/settings.html')));
+app.get('/reports',  (req, res) => res.sendFile(path.join(__dirname, 'public', 'pages/reports.html')));
+app.get('/',         (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 
 app.use(notFound);
 app.use(errorHandler);
