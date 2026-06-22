@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Reports — Monitoring Alarm IoT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../css/style.css" rel="stylesheet">
+</head>
+<body id="page-top">
+<div id="wrapper">
+
+  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <a class="sidebar-brand" href="/"><div class="sidebar-brand-icon"><i class="fas fa-broadcast-tower"></i></div><div class="sidebar-brand-text">Monitoring <sup>IoT</sup></div></a>
+    <hr class="sidebar-divider my-0">
+    <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">Sistem</div>
+    <li class="nav-item active"><a class="nav-link" href="/reports"><i class="fas fa-fw fa-file-export"></i> <span>Reports</span></a></li>
+    <li class="nav-item admin-only" style="display:none;"><a class="nav-link" href="/settings"><i class="fas fa-fw fa-cogs"></i> <span>Settings</span></a></li>
+    <hr class="sidebar-divider d-none d-md-block">
+  </ul>
+
+  <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+
+      <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+              <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="topbarUsername">User</span>
+              <div class="img-profile rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width:32px;height:32px;color:#fff;font-weight:700;font-size:13px;" id="userAvatar">A</div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
+              <a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout</a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="container-fluid">
+        <h1 class="h4 mb-4 text-gray-800 font-weight-bold"><i class="fas fa-file-export mr-2"></i> Reports</h1>
+        <p class="text-gray-600 small mb-4">Export data historis sensor, DHT11, alert, dan log buzzer ke format CSV, Excel, atau PDF.</p>
+
+        <div id="exportStatus" class="alert d-none" role="alert"></div>
+
+        <div class="row">
+
+          <!-- Sensor Report -->
+          <div class="col-lg-6 mb-4">
+            <div class="card shadow h-100">
+              <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-microchip mr-2"></i> Sensor (Beam/PIR/Ultrasonik)</h6></div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label class="small font-weight-bold">Rentang Waktu</label>
+                  <select class="form-control" data-range-for="sensors">
+                    <option value="1h">1 Jam Terakhir</option>
+                    <option value="24h">24 Jam Terakhir</option>
+                    <option value="7d" selected>7 Hari Terakhir</option>
+                    <option value="30d">30 Hari Terakhir</option>
+                  </select>
+                </div>
+                <div class="btn-group btn-group d-flex">
+                  <button class="btn btn-outline-success" data-export="csv"   data-type="sensors"><i class="fas fa-file-csv mr-1"></i> CSV</button>
+                  <button class="btn btn-outline-primary" data-export="excel" data-type="sensors"><i class="fas fa-file-excel mr-1"></i> Excel</button>
+                  <button class="btn btn-outline-danger"  data-export="pdf"   data-type="sensors"><i class="fas fa-file-pdf mr-1"></i> PDF</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DHT11 Report -->
+          <div class="col-lg-6 mb-4">
+            <div class="card shadow h-100">
+              <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-thermometer-half mr-2"></i> DHT11 Logs</h6></div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label class="small font-weight-bold">Rentang Waktu</label>
+                  <select class="form-control" data-range-for="dht11">
+                    <option value="1h">1 Jam Terakhir</option>
+                    <option value="24h">24 Jam Terakhir</option>
+                    <option value="7d" selected>7 Hari Terakhir</option>
+                    <option value="30d">30 Hari Terakhir</option>
+                  </select>
+                </div>
+                <div class="btn-group btn-group d-flex">
+                  <button class="btn btn-outline-success" data-export="csv"   data-type="dht11"><i class="fas fa-file-csv mr-1"></i> CSV</button>
+                  <button class="btn btn-outline-primary" data-export="excel" data-type="dht11"><i class="fas fa-file-excel mr-1"></i> Excel</button>
+                  <button class="btn btn-outline-danger"  data-export="pdf"   data-type="dht11"><i class="fas fa-file-pdf mr-1"></i> PDF</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Alerts Report -->
+          <div class="col-lg-6 mb-4">
+            <div class="card shadow h-100">
+              <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-exclamation-triangle mr-2"></i> Alerts</h6></div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label class="small font-weight-bold">Rentang Waktu</label>
+                  <select class="form-control" data-range-for="alerts">
+                    <option value="1h">1 Jam Terakhir</option>
+                    <option value="24h">24 Jam Terakhir</option>
+                    <option value="7d" selected>7 Hari Terakhir</option>
+                    <option value="30d">30 Hari Terakhir</option>
+                  </select>
+                </div>
+                <div class="btn-group btn-group d-flex">
+                  <button class="btn btn-outline-success" data-export="csv"   data-type="alerts"><i class="fas fa-file-csv mr-1"></i> CSV</button>
+                  <button class="btn btn-outline-primary" data-export="excel" data-type="alerts"><i class="fas fa-file-excel mr-1"></i> Excel</button>
+                  <button class="btn btn-outline-danger"  data-export="pdf"   data-type="alerts"><i class="fas fa-file-pdf mr-1"></i> PDF</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Buzzer Report -->
+          <div class="col-lg-6 mb-4">
+            <div class="card shadow h-100">
+              <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-volume-up mr-2"></i> Buzzer Log</h6></div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label class="small font-weight-bold">Rentang Waktu</label>
+                  <select class="form-control" data-range-for="buzzer">
+                    <option value="1h">1 Jam Terakhir</option>
+                    <option value="24h">24 Jam Terakhir</option>
+                    <option value="7d" selected>7 Hari Terakhir</option>
+                    <option value="30d">30 Hari Terakhir</option>
+                  </select>
+                </div>
+                <div class="btn-group btn-group d-flex">
+                  <button class="btn btn-outline-success" data-export="csv"   data-type="buzzer"><i class="fas fa-file-csv mr-1"></i> CSV</button>
+                  <button class="btn btn-outline-primary" data-export="excel" data-type="buzzer"><i class="fas fa-file-excel mr-1"></i> Excel</button>
+                  <button class="btn btn-outline-danger"  data-export="pdf"   data-type="buzzer"><i class="fas fa-file-pdf mr-1"></i> PDF</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <footer class="sticky-footer bg-white">
+      <div class="container my-auto"><div class="copyright text-center my-auto"><span>Copyright &copy; Monitoring Alarm IoT 2026</span></div></div>
+    </footer>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.2/js/bootstrap.bundle.min.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/reports.js"></script>
+</body>
+</html>

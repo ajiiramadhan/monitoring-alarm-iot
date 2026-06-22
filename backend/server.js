@@ -39,7 +39,7 @@ app.use('/api/reports',  require('./routes/reports.routes'));
 app.use('/api/buzzer',   require('./routes/buzzer.routes'));
 app.get('/api/health',   (req, res) => res.json({ success: true, status: 'ok', time: new Date().toISOString() }));
 
-const frontendDir = path.join(__dirname, '../frontend');
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(frontendDir));
 app.get('/login',    (req, res) => res.sendFile(path.join(frontendDir, 'pages/login.html')));
 app.get('/settings', (req, res) => res.sendFile(path.join(frontendDir, 'pages/settings.html')));

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Login — Monitoring Alarm IoT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../css/style.css" rel="stylesheet">
+</head>
+<body>
+<div class="login-wrapper">
+  <div class="card login-card">
+    <div class="card-body p-4 p-md-5">
+      <div class="text-center mb-4">
+        <div class="login-icon"><i class="fas fa-broadcast-tower"></i></div>
+        <h4 class="font-weight-bold text-gray-800 mb-1">Monitoring Alarm IoT</h4>
+        <p class="text-gray-500 small">Masuk untuk mengakses dashboard</p>
+      </div>
+      <div id="loginError" class="alert alert-danger small d-none"></div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="small font-weight-bold">Username</label>
+          <input type="text" class="form-control" id="username" placeholder="Masukkan username" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label class="small font-weight-bold">Password</label>
+          <input type="password" class="form-control" id="password" placeholder="Masukkan password" required autocomplete="current-password">
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" id="rememberMe">
+          <label class="form-check-label small" for="rememberMe">Ingat saya</label>
+        </div>
+        <button type="submit" id="loginSubmit" class="btn btn-primary btn-block">
+          <i class="fas fa-sign-in-alt mr-1"></i> Login
+        </button>
+      </form>
+      <hr>
+      <p class="text-center text-gray-500 small mb-0">
+        Demo: <code>admin</code> / <code>operator</code> / <code>viewer</code><br>
+        Default password: <code>Admin123!</code>
+      </p>
+    </div>
+  </div>
+</div>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+</body>
+</html>
