@@ -14,6 +14,7 @@ const { notFound, errorHandler } = require('./middleware/errorHandler');
 const { initMqtt } = require('./mqtt/mqttClient');
 
 const app    = express();
+app.set('trust proxy', 1);
 const server = http.createServer(app);
 const io     = new Server(server, { cors: { origin: '*' } });
 app.set('io', io);
