@@ -102,4 +102,3 @@ setInterval(async () => {
   `);
   console.log('[Device] Auto-offline check ran');
 }, 60000); // setiap 60 detik
-const cron = require('node-cron');
