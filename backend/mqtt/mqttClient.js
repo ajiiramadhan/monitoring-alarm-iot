@@ -6,7 +6,7 @@ const { evaluateAndAlert } = require('../services/alertService');
 let client = null;
 
 function initMqtt(io) {
-  const url = `mqtt://${config.mqtt.host}:${config.mqtt.port}`;
+  const url = `mqtts://${config.mqtt.host}:${config.mqtt.port}`;
   client = mqtt.connect(url, {
     clientId: config.mqtt.clientId,
     username: config.mqtt.username,
