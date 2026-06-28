@@ -92,3 +92,13 @@ function publish(topic, payload) {
 function getClient() { return client; }
 
 module.exports = { initMqtt, publish, getClient };
+// Cek setiap 1 menit, device offline kalau last_seen > 2 menit
+setInterval(async () => {
+  await query(`
+    UPDATE devices 
+    SET status = 'offline' 
+    WHERE status = 'online' 
+    AND last_seen < NOW() - INTERVAL '2 minutes'
+  `);
+  console.log('[Device] Auto-offline check ran');
+}, 60000); // setiap 60 detik
