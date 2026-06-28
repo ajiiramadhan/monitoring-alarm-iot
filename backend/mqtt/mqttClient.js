@@ -78,6 +78,7 @@ async function handleBuzzer(io, payload) {
 async function handleDeviceStatus(io, topic, buf) {
   const deviceId = topic.split('/').pop();
   const status = buf.toString() === 'online' ? 'online' : 'offline';
+   console.log(`[Device] ${deviceId} → ${status}`); //
   await query(`INSERT INTO devices (device_id,name,status,last_seen) VALUES($1,$1,$2,NOW()) ON CONFLICT (device_id) DO UPDATE SET status=$2,last_seen=NOW()`, [deviceId, status]);
   io.emit('device:status', { device_id: deviceId, status, last_seen: new Date().toISOString() });
 }
