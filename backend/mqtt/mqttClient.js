@@ -102,3 +102,12 @@ setInterval(async () => {
   `);
   console.log('[Device] Auto-offline check ran');
 }, 60000); // setiap 60 detik
+const cron = require('node-cron');
+
+// Reset alert setiap hari jam 00:00 (tengah malam)
+cron.schedule('0 0 * * *', async () => {
+  await query(`UPDATE alerts SET is_read = true WHERE is_read = false`);
+  console.log('[CRON] Alert harian direset');
+}, {
+  timezone: "Asia/Jakarta"
+});
