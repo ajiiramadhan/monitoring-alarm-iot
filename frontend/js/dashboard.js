@@ -240,7 +240,8 @@
       const { sensors, dht11, devices, unread_alerts } = res.data;
       sensors.forEach(s => updateSensorCard(s.sensor_type, s.value));
       if (dht11) updateDhtSummary(dht11);
-      if (devices && devices.length) setDeviceStatus(devices[0].status, devices[0].last_seen);
+     const targetDevice = devices.find(d => d.device_id === 'esp32-001') || devices[0];
+     if (targetDevice) setDeviceStatus(targetDevice.status, targetDevice.last_seen);
       else setDeviceStatus('offline', null);
       setAlertBadge(unread_alerts || 0);
     } catch (e) { console.error('[Initial Load]', e); }
