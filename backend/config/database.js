@@ -25,7 +25,7 @@ async function query(text, params) {
 }
 
 async function migrate() {
-  const base = path.join(__dirname, '../../database');
+  const base = path.join(__dirname, '../database'); (hapus satu '../'). 
   const schema = path.join(base, 'schema.sql');
   const seed   = path.join(base, 'seed.sql');
   if (fs.existsSync(schema)) { await pool.query(fs.readFileSync(schema, 'utf8')); console.log('[DB] Schema OK'); }
